@@ -1,0 +1,20 @@
+# Normalizzazione newline deterministica
+* text=auto
+
+# Sorgenti C#/progetto: LF (i .cs decompilati sono LF)
+*.cs text eol=lf
+*.csproj text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+
+# File dati dell'app letti con ReadLine() a coppie: CRLF obbligatorio su Windows
+*.txt text eol=crlf
+*.resx text eol=crlf
+
+# Binari
+*.png binary
+*.ico binary
+*.jpg binary
+*.gif binary
+*.dll binary
+*.exe binary

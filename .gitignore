@@ -1,0 +1,20 @@
+# build
+bin/
+obj/
+*.user
+# dati runtime e backup storici (contenevano URL dell'era 2011)
+REG/
+*.mp4
+*.ts
+data/backup_*/
+data/canaliesclusi.txt
+data/dbtele.txt
+# codice bonificato e binario originale (credenziali incorporate UTF-16)
+quarantine/
+original/
+# scratch
+scratch/
+*.log
+__pycache__/
+docs/STATE.md
+release/

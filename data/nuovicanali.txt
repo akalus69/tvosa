@@ -1,0 +1,152 @@
+(Rai) Rai 4
+https://www.raiplay.it/dirette/rai4|<-->|https://www.raiplay.it/dirette/rai4
+(Sport) Sport Italia
+https://www.sportitalia.com/live/|<-->|https://www.sportitalia.com/live/
+(Cultura) Rai Scuola
+https://www.raiplay.it/dirette/raiscuola|<-->|https://www.raiplay.it/dirette/raiscuola
+(Divertimento) Rai sat YoYo
+https://www.raiplay.it/dirette/raiyoyo|<-->|https://www.raiplay.it/dirette/raiyoyo
+(Radio) Radio Onda Rossa
+http://radio.dyne.org:8000/ondarossa.mp3|<-->|http://radio.dyne.org:8000/ondarossa.mp3
+(Radio) Norba
+http://onair1.xdevel.com/RadioNorba_32|<-->|http://onair1.xdevel.com/RadioNorba_32
+(Sport) Super Tennis
+http://www.supertennis.tv/|<-->|http://www.supertennis.tv/
+(Radio) Radio Siena
+http://energy10.egihosting.com/776344|<-->|http://energy10.egihosting.com/776344
+(Radio) IP music
+http://live9.avf.ch:8000/ipmusic128|<-->|http://live9.avf.ch:8000/ipmusic128
+(Esteri) Nasa
+https://www.youtube.com/@NASA/live|<-->|https://www.youtube.com/@NASA/live
+(Radio) RadioRadicale
+http://livemp3.radioradicale.it/live.mp3|<-->|http://livemp3.radioradicale.it/live.mp3
+(Notiziari) RaiNews 24
+https://www.raiplay.it/dirette/rainews24|<-->|https://www.raiplay.it/dirette/rainews24
+(Rai) Rai 5
+https://www.raiplay.it/dirette/rai5|<-->|https://www.raiplay.it/dirette/rai5
+(Rai) Rai Movie
+https://www.raiplay.it/dirette/raimovie|<-->|https://www.raiplay.it/dirette/raimovie
+(Rai) Rai Premium
+https://www.raiplay.it/dirette/raipremium|<-->|https://www.raiplay.it/dirette/raipremium
+(Rai) Rai Yoyo
+https://www.raiplay.it/dirette/raiyoyo|<-->|https://www.raiplay.it/dirette/raiyoyo
+(Rai) Rai Gulp
+https://www.raiplay.it/dirette/raigulp|<-->|https://www.raiplay.it/dirette/raigulp
+(Rai) Rai Storia
+https://www.raiplay.it/dirette/raistoria|<-->|https://www.raiplay.it/dirette/raistoria
+(Rai) Rai Scuola
+https://www.raiplay.it/dirette/raiscuola|<-->|https://www.raiplay.it/dirette/raiscuola
+(Rai) Rai News 24
+https://www.raiplay.it/dirette/rainews24|<-->|https://www.raiplay.it/dirette/rainews24
+(Rai) RSI LA1
+https://www.rsi.ch/la1/|<-->|https://www.rsi.ch/la1/
+(Rai) RSI LA2
+https://www.rsi.ch/la2/|<-->|https://www.rsi.ch/la2/
+(Rai) RSI Rete Due
+https://www.rsi.ch/rete-due/|<-->|https://www.rsi.ch/rete-due/
+(Notiziari) Sky TG24
+https://www.youtube.com/@SkyTG24/live|<-->|https://www.youtube.com/@SkyTG24/live
+(Notiziari) Euronews
+https://www.youtube.com/@euronews/live|<-->|https://www.youtube.com/@euronews/live
+(Notiziari) France 24
+https://www.youtube.com/france24/live|<-->|https://www.youtube.com/france24/live
+(Notiziari) DW News
+https://www.youtube.com/@dwnews/live|<-->|https://www.youtube.com/@dwnews/live
+(Notiziari) Al Jazeera English
+https://www.youtube.com/@aljazeeraenglish/live|<-->|https://www.youtube.com/@aljazeeraenglish/live
+(Notiziari) Bloomberg TV
+https://www.youtube.com/@markets/live|<-->|https://www.youtube.com/@markets/live
+(Tecnologia) NASA TV+
+https://www.youtube.com/@NASA/live|<-->|https://www.youtube.com/@NASA/live
+(Religione) TV2000
+https://www.youtube.com/@Tv2000it/live|<-->|https://www.youtube.com/@Tv2000it/live
+(Radio) Radio Deejay TV
+https://www.youtube.com/@mydeejay/live|<-->|https://www.youtube.com/@mydeejay/live
+(Radio) Virgin Radio TV UK
+https://www.youtube.com/@VirginRadioUK/live|<-->|https://www.youtube.com/@VirginRadioUK/live
+(Mediaset) TV8
+https://www.tv8.it/streaming|<-->|https://www.tv8.it/streaming
+(Mediaset) Mediaset Infinity Live
+https://mediasetinfinity.mediaset.it/|<-->|https://mediasetinfinity.mediaset.it/
+(Mediaset) Canale 5
+https://mediasetinfinity.mediaset.it/diretta/canale5_cC5|<-->|https://mediasetinfinity.mediaset.it/diretta/canale5_cC5
+(Mediaset) Italia 1
+https://mediasetinfinity.mediaset.it/diretta/italia1_cI1|<-->|https://mediasetinfinity.mediaset.it/diretta/italia1_cI1
+(Mediaset) Rete 4
+https://mediasetinfinity.mediaset.it/diretta/rete4_cR4|<-->|https://mediasetinfinity.mediaset.it/diretta/rete4_cR4
+(Mediaset) La 5
+https://mediasetinfinity.mediaset.it/diretta/la5_cKA|<-->|https://mediasetinfinity.mediaset.it/diretta/la5_cKA
+(Mediaset) Iris
+https://mediasetinfinity.mediaset.it/diretta/iris_cKI|<-->|https://mediasetinfinity.mediaset.it/diretta/iris_cKI
+(Mediaset) 20
+https://mediasetinfinity.mediaset.it/diretta/20mediaset_cLB|<-->|https://mediasetinfinity.mediaset.it/diretta/20mediaset_cLB
+(Mediaset) TopCrime
+https://mediasetinfinity.mediaset.it/diretta/topcrime_cLT|<-->|https://mediasetinfinity.mediaset.it/diretta/topcrime_cLT
+(Mediaset) Cine34
+https://mediasetinfinity.mediaset.it/diretta/cine34_cB6|<-->|https://mediasetinfinity.mediaset.it/diretta/cine34_cB6
+(Mediaset) Mediaset Extra
+https://mediasetinfinity.mediaset.it/diretta/mediasetextra_cKQ|<-->|https://mediasetinfinity.mediaset.it/diretta/mediasetextra_cKQ
+(Mediaset) Focus
+https://mediasetinfinity.mediaset.it/diretta/focus_cFU|<-->|https://mediasetinfinity.mediaset.it/diretta/focus_cFU
+(Mediaset) Italia 2
+https://mediasetinfinity.mediaset.it/diretta/italia2_cI2|<-->|https://mediasetinfinity.mediaset.it/diretta/italia2_cI2
+(Rai) Rai 1
+https://www.raiplay.it/dirette/rai1|<-->|https://www.raiplay.it/dirette/rai1
+(Rai) Rai 2
+https://www.raiplay.it/dirette/rai2|<-->|https://www.raiplay.it/dirette/rai2
+(Rai) Rai 3
+https://www.raiplay.it/dirette/rai3|<-->|https://www.raiplay.it/dirette/rai3
+(Sport) Rai Sport
+https://www.raiplay.it/dirette/raisport|<-->|https://www.raiplay.it/dirette/raisport
+(Notiziari) Sky News
+https://www.youtube.com/@SkyNews/live|<-->|https://www.youtube.com/@SkyNews/live
+(Notiziari) ABC News Live
+https://www.youtube.com/@ABCNews/live|<-->|https://www.youtube.com/@ABCNews/live
+(Notiziari) NBC News NOW
+https://www.youtube.com/@NBCNews/live|<-->|https://www.youtube.com/@NBCNews/live
+(Notiziari) TRT World
+https://www.youtube.com/@trtworld/live|<-->|https://www.youtube.com/@trtworld/live
+(Notiziari) TRT Haber
+https://www.youtube.com/@trthaber/live|<-->|https://www.youtube.com/@trthaber/live
+(Notiziari) NHK World
+https://www.youtube.com/@NHKWorldJapan/live|<-->|https://www.youtube.com/@NHKWorldJapan/live
+(Notiziari) FRANCE 24 FR
+https://www.youtube.com/@FRANCE24/live|<-->|https://www.youtube.com/@FRANCE24/live
+(Notiziari) Al Jazeera Mubasher
+https://www.youtube.com/@aljazeeramubasher/live|<-->|https://www.youtube.com/@aljazeeramubasher/live
+(Notiziari) Al Arabiya
+https://www.youtube.com/@AlArabiya/live|<-->|https://www.youtube.com/@AlArabiya/live
+(Notiziari) CGTN
+https://www.youtube.com/@cgtn/live|<-->|https://www.youtube.com/@cgtn/live
+(Notiziari) WION
+https://www.youtube.com/@WION/live|<-->|https://www.youtube.com/@WION/live
+(Notiziari) Euronews Italia
+https://www.youtube.com/@euronewsit/live|<-->|https://www.youtube.com/@euronewsit/live
+(Musica) Lofi Girl
+https://www.youtube.com/@LofiGirl/live|<-->|https://www.youtube.com/@LofiGirl/live
+(Notiziari) CBC News
+https://www.youtube.com/@CBCNews/live|<-->|https://www.youtube.com/@CBCNews/live
+(Notiziari) RTVE Noticias
+https://www.youtube.com/@rtvenoticias/live|<-->|https://www.youtube.com/@rtvenoticias/live
+(Notiziari) franceinfo
+https://www.youtube.com/@franceinfo/live|<-->|https://www.youtube.com/@franceinfo/live
+(Notiziari) TVP Info
+https://www.youtube.com/@TVPinfo/live|<-->|https://www.youtube.com/@TVPinfo/live
+(Notiziari) ABC News Australia
+https://www.youtube.com/@abcnewsaustralia/live|<-->|https://www.youtube.com/@abcnewsaustralia/live
+(Notiziari) Nippon News24
+https://www.youtube.com/@ntv_news/live|<-->|https://www.youtube.com/@ntv_news/live
+(Notiziari) YTN
+https://www.youtube.com/@ytnnews24/live|<-->|https://www.youtube.com/@ytnnews24/live
+(Notiziari) KBS World
+https://www.youtube.com/@kbsworldtv/live|<-->|https://www.youtube.com/@kbsworldtv/live
+(Notiziari) Republic World
+https://www.youtube.com/@RepublicWorld/live|<-->|https://www.youtube.com/@RepublicWorld/live
+(Notiziari) Al Hadath
+https://www.youtube.com/@AlHadath/live|<-->|https://www.youtube.com/@AlHadath/live
+(Notiziari) Canal 26
+https://www.youtube.com/@canal26/live|<-->|https://www.youtube.com/@canal26/live
+(Religione) EWTN Live
+https://www.youtube.com/@EWTNLiveMass/live|<-->|https://www.youtube.com/@EWTNLiveMass/live
+(Documentari) Free Nature TV
+https://www.youtube.com/@RedSquirrelStudios/live|<-->|https://www.youtube.com/@RedSquirrelStudios/live

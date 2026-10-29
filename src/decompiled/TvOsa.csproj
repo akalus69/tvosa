@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+      <AssemblyName>TvOsa</AssemblyName>
+      <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+      <OutputType>WinExe</OutputType>
+      <UseWindowsForms>True</UseWindowsForms>
+      <TargetFramework>net48</TargetFramework>
+      <PlatformTarget>x86</PlatformTarget>
+      <GenerateResourceUsePreserializedResources>True</GenerateResourceUsePreserializedResources>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+                <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.*" />
+              </ItemGroup>
+      <ItemGroup>
+        <Content Include="..\..\tools\tvosa_recorder.py">
+                  <Link>tools\tvosa_recorder.py</Link>
+                  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </Content>
+                <Content Include="..\..\tools\tvosa_find.py">
+                  <Link>tools\tvosa_find.py</Link>
+                  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </Content>
+                <Content Include="../../tools/tvosa_mcp.py">
+                                  <Link>tools/tvosa_mcp.py</Link>
+                                  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                                </Content>
+                                <Content Include="../../tools/tvosa_trailer.py">
+                                  <Link>tools/tvosa_trailer.py</Link>
+                                  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                                </Content>
+              </ItemGroup>
+  <ItemGroup>
+      <Reference Include="System.Web.Extensions" />
+    </ItemGroup>
+    <PropertyGroup>
+      <LangVersion>14.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup />
+</Project>

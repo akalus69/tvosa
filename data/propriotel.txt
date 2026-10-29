@@ -1,0 +1,72 @@
+1 (Rai) Rai 1
+2 (Rai) Rai 2
+3 (Rai) Rai 3
+4 (Mediaset) Rete 4
+5 (Mediaset) Canale 5
+6 (Mediaset) Italia 1
+7 (Mediaset) La 5
+8 (Rai) Rai 4
+9 (Rai) Rai 5
+10 (Rai) Rai Movie
+11 (Rai) Rai Premium
+12 (Rai) Rai Yoyo
+13 (Rai) Rai Gulp
+14 (Rai) Rai Storia
+15 (Rai) Rai Scuola
+16 (Sport) Rai Sport
+17 (Notiziari) RaiNews 24
+18 (Rai) RSI LA1
+19 (Rai) RSI LA2
+20 (Rai) RSI Rete Due
+21 (Sport) Sport Italia
+22 (Notiziari) Sky TG24
+23 (Notiziari) Euronews
+24 (Notiziari) France 24
+25 (Notiziari) DW News
+26 (Notiziari) Al Jazeera English
+27 (Notiziari) Bloomberg TV
+28 (Tecnologia) NASA TV+
+29 (Religione) TV2000
+30 (Radio) Radio Deejay TV
+31 (Radio) Virgin Radio TV UK
+32 (Mediaset) TV8
+33 (Mediaset) Iris
+34 (Mediaset) 20
+35 (Mediaset) TopCrime
+36 (Mediaset) Cine34
+37 (Mediaset) Mediaset Extra
+38 (Mediaset) Focus
+39 (Mediaset) Italia 2
+40 (Mediaset) Mediaset Infinity Live
+41 (Sport) Super Tennis
+42 (Radio) Radio Onda Rossa
+43 (Radio) RadioRadicale
+44 (Radio) Radio Siena
+45 (Radio) IP music
+46 (Radio) Norba
+47 (Notiziari) Sky News
+48 (Notiziari) ABC News Live
+49 (Notiziari) NBC News NOW
+50 (Notiziari) TRT World
+51 (Notiziari) TRT Haber
+52 (Notiziari) NHK World
+53 (Notiziari) FRANCE 24 FR
+54 (Notiziari) Al Jazeera Mubasher
+55 (Notiziari) Al Arabiya
+56 (Notiziari) CGTN
+57 (Notiziari) WION
+58 (Notiziari) Euronews Italia
+59 (Musica) Lofi Girl
+60 (Notiziari) CBC News
+61 (Notiziari) RTVE Noticias
+62 (Notiziari) franceinfo
+63 (Notiziari) TVP Info
+64 (Notiziari) ABC News Australia
+65 (Notiziari) Nippon News24
+66 (Notiziari) YTN
+67 (Notiziari) KBS World
+68 (Notiziari) Republic World
+69 (Notiziari) Al Hadath
+70 (Notiziari) Canal 26
+71 (Religione) EWTN Live
+72 (Documentari) Free Nature TV

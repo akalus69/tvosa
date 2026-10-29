@@ -1,0 +1,6 @@
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.raiplay.it/dirette/rai1|<-->|https://www.raiplay.it/dirette/rai1
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.raiplay.it/dirette/rai2|<-->|https://www.raiplay.it/dirette/rai2
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.raiplay.it/dirette/rai3|<-->|https://www.raiplay.it/dirette/rai3
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.mediaset.it/live|<-->|https://www.mediaset.it/live
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.mediaset.it/live|<-->|https://www.mediaset.it/live
+--http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"  https://www.mediaset.it/live|<-->|https://www.mediaset.it/live
