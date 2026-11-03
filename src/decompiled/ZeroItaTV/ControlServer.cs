@@ -121,7 +121,7 @@ namespace ZeroItaTV
 				}
 				else if (path == "trailers" && method == "GET")
 				{
-					Trailers(ctx, Val(p, "mode"), Val(p, "genre"), Val(p, "type"), Val(p, "offset"), Val(p, "seed"), Val(p, "year"));
+					Trailers(ctx, Val(p, "mode"), Val(p, "genre"), Val(p, "type"), Val(p, "offset"), Val(p, "seed"), Val(p, "year"), Val(p, "seen"));
 				}
 				else if (path == "trailer" && method == "GET")
 				{
@@ -254,7 +254,7 @@ namespace ZeroItaTV
 		// ---------- selettore serata ----------
 		// Pool di candidati (pozzi JustWatch) e trailer YouTube: stesso motore
 		// Python della finestra TRAILER e del futuro tool MCP (sidecar tvosa_trailer.py).
-		private static void Trailers(HttpListenerContext ctx, string mode, string genre, string tipo, string offset, string seed, string year)
+		private static void Trailers(HttpListenerContext ctx, string mode, string genre, string tipo, string offset, string seed, string year, string seen)
 		{
 			if (mode == "")
 			{
@@ -280,6 +280,11 @@ namespace ZeroItaTV
 			if (year != "")
 			{
 				args = args + " --year " + year;
+			}
+			if (seen != "")
+			{
+				// lista id separata da virgole: un solo token per il sidecar
+				args = args + " --seen " + seen.Replace(" ", "").Replace("\"", "");
 			}
 			RunSidecar(ctx, args, 60000, "motore trailer muto");
 		}

@@ -420,7 +420,7 @@ internal class ThreadCapo
 			{
 				streamWriter.WriteLine("set \"vlc=c:\\progra~2\\videolan\\vlc\\vlc\"");
 			}
-			streamWriter.WriteLine("wget -q -O temp.txt \"http://zeroradio.altervista.org/zerol.php\"");
+			streamWriter.WriteLine("wget -q -O temp.txt \"http://non-piu-disponibile.invalid/zerol.php\"");
 			streamWriter.WriteLine("find \"" + ch + "\"<temp.txt>chann.txt");
 			streamWriter.WriteLine("erase temp.txt");
 			streamWriter.WriteLine("set /p chan=<chann.txt");

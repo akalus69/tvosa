@@ -72,7 +72,7 @@ TOOLS = [
       "type": {"type": "string", "description": "film|serie|tutto (default tutto)"},
       "offset": {"type": "integer"}, "pool": {"type": "integer", "description": "quanti titoli (default 10)"},
       "seed": {"type": "integer", "description": "per MISCELA reproducibile"},
-      "year": {"type": "integer", "description": "anno di uscita esatto (es. 2025)"},
+      "year": {"type": "string", "description": "anno o intervallo: '2025' oppure '2010-2020'"},
       "apri": {"type": "boolean", "description": "apre il pannello TRAILER di TVOSA con questi filtri (pool navigabile)"}}, []),
     ("tvosa_trailer", "Cerca il trailer italiano (fallback originale) su YouTube per titolo+anno. Ritorna youTubeId ed embed. Con apri=true lo apre DENTRO il pannello TRAILER dell'app TVOSA.",
      {"title": {"type": "string"}, "year": {"type": "integer"},
@@ -191,7 +191,8 @@ def find_film(title, country="IT"):
 def _trailer_args(args):
     out = []
     for k, flag in (("mode", "--mode"), ("genre", "--genre"), ("type", "--type"),
-                    ("offset", "--offset"), ("pool", "--pool"), ("seed", "--seed")):
+                    ("offset", "--offset"), ("pool", "--pool"), ("seed", "--seed"),
+                    ("year", "--year")):
         v = args.get(k)
         if v not in (None, "", 0):
             out += [flag, str(v)]
@@ -232,9 +233,11 @@ def call_tool(name, args):
         for k in ("mode", "genre", "type"):
             if g(k):
                 p[k] = g(k)
-        for k in ("offset", "pool", "seed", "year"):
+        for k in ("offset", "pool", "seed"):
             if args.get(k) not in (None, "", 0):
                 p[k] = str(int(args[k]))
+        if args.get("year") not in (None, "", 0):
+            p["year"] = str(args["year"])  # accetta '2025' o l'intervallo '2010-2020'
         if args.get("apri") in (True, "true", "1", "si", "sì", "yes"):
             return api("GET", "trailershow", p)
         res, err = api("GET", "trailers", p)

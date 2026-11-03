@@ -56,6 +56,8 @@ namespace ZeroItaTV
 		private int nextOffset;
 
 		private bool esauriti;
+		// id dei trailer gia' mostrati nella sessione: non si ripetono mai piu'
+		private List<string> visti = new List<string>();
 
 		private int seed;
 
@@ -302,6 +304,12 @@ namespace ZeroItaTV
 			{
 				url = url + "&year=" + filtroAnno;
 			}
+			if (visti.Count > 0)
+			{
+				// il motore esclude cio' che abbiamo gia' visto: niente doppioni tra blocchi
+				int da = visti.Count > 400 ? visti.Count - 400 : 0;
+				url = url + "&seen=" + string.Join(",", visti.GetRange(da, visti.Count - da).ToArray());
+			}
 			return url;
 		}
 
@@ -314,6 +322,7 @@ namespace ZeroItaTV
 			seed = new Random().Next(1, 999999);
 			pool.Clear();
 			trailerCache.Clear();
+			visti.Clear();
 			idx = -1;
 			nextOffset = 0;
 			esauriti = false;
@@ -370,7 +379,15 @@ namespace ZeroItaTV
 							return;
 						}
 						pool.AddRange(nuovi);
-						nextOffset = noff;
+											foreach (Dictionary<string, object> d in nuovi)
+											{
+												string idd = d.ContainsKey("id") ? Convert.ToString(d["id"]) : "";
+												if (idd != "" && !visti.Contains(idd))
+												{
+													visti.Add(idd);
+												}
+											}
+											nextOffset = noff;
 						esauriti = fine;
 						if (idx < 0 && pool.Count > 0)
 						{

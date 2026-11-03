@@ -12,6 +12,7 @@ Uso:
   py -3.13 tvosa_trailer.py --json --mode misto|sala|recenti|capolavori
                             [--genre azione] [--type film|serie|tutto]
                             [--offset 0] [--pool 10] [--seed N]
+                            [--year 2025 | --year 2010-2020] [--seen id1,id2,...]
   py -3.13 tvosa_trailer.py --json --trailerfor "<titolo>" "<anno>"
 """
 import json
@@ -59,22 +60,6 @@ GENRES = {
 MESI_RECENTI = 12
 
 
-def jw_popular(filt, first=100, ranked=False):
-    q = RANKED_TITLES if ranked else POPULAR_TITLES
-    r = jw_gql(q, {"country": "IT", "language": "it", "filter": filt, "first": first}, "T")
-    edges = (r.get("data") or {}).get("popularTitles", {}).get("edges", []) or []
-    out = []
-    for e in edges:
-        n = e["node"]
-        c = n.get("content") or {}
-        if not c.get("title"):
-            continue
-        out.append({"id": n["id"], "objectId": n.get("objectId"),
-                    "titolo": c["title"], "anno": c.get("originalReleaseYear"),
-                    "genere": [g["shortName"] for g in (c.get("genres") or [])]})
-    return out
-
-
 def base_filter(mode_type, genre, year=None):
     f = {}
     if mode_type == "film":
@@ -92,20 +77,77 @@ def base_filter(mode_type, genre, year=None):
         if codes:
             f["genres"] = codes
     if year:
-        y = int(year)
-        f["releaseYear"] = {"min": y, "max": y}  # IntFilter: min/max, NON range/eq
+        ymin, ymax = parse_year(year)
+        f["releaseYear"] = {"min": ymin, "max": ymax}  # IntFilter: min/max, NON range/eq
     return f
+
+
+def parse_year(y):
+    """--year accetta '2015' oppure l'intervallo '2010-2020'."""
+    y = str(y).strip()
+    if "-" in y:
+        a, b = y.split("-", 1)
+        return int(a), int(b)
+    v = int(y)
+    return v, v
+
+
+_MEMO = {}
+
+
+def jw_popular(filt, first=100, ranked=False):
+    key = (json.dumps(filt, sort_keys=True), first, ranked)
+    if key in _MEMO:
+        return _MEMO[key]
+    q = RANKED_TITLES if ranked else POPULAR_TITLES
+    r = jw_gql(q, {"country": "IT", "language": "it", "filter": filt, "first": first}, "T")
+    edges = (r.get("data") or {}).get("popularTitles", {}).get("edges", []) or []
+    out = []
+    for e in edges:
+        n = e["node"]
+        c = n.get("content") or {}
+        if not c.get("title"):
+            continue
+        out.append({"id": n["id"], "objectId": n.get("objectId"),
+                    "titolo": c["title"], "anno": c.get("originalReleaseYear"),
+                    "genere": [g["shortName"] for g in (c.get("genres") or [])]})
+    _MEMO[key] = out
+    return out
+
+
+def jw_range(f, ranked=False):
+    """JustWatch da' solo i primi 100 per query: con un intervallo di anni si
+    interroga anno per anno (dal piu' recente) e si unisce (dedup per id).
+    Per il pozzo ordinato-per-voto non serve: una query sola col range da'
+    gia' la classifica globale dei primi 100 nell'ordine giusto."""
+    ymin, ymax = f["releaseYear"]["min"], f["releaseYear"]["max"]
+    if ymax == ymin or ymax - ymin > 15:
+        return jw_popular(f, 100, ranked)
+    out = []
+    ids = set()
+    for y in range(ymax, ymin - 1, -1):
+        f2 = dict(f)
+        f2["releaseYear"] = {"min": y, "max": y}
+        for t in jw_popular(f2, 100, ranked):
+            if t["id"] not in ids:
+                ids.add(t["id"])
+                out.append(t)
+    return out
 
 
 def well_sala(f):
     f2 = dict(f)
     f2["monetizationTypes"] = ["CINEMA"]
-    return jw_popular(f2, 100)
+    out = jw_popular(f2, 100)
+    if not out and "releaseYear" in f:
+        # un film del 2013 non e' "in sala ora": il pozzo sala con anno e' vuoto per definizione
+        out = []
+    return out
 
 
 def well_recenti(f):
     if "releaseYear" in f:
-        return jw_popular(f, 100)  # anno gia' imposto lato JustWatch
+        return jw_range(f)  # anno o intervallo gia' imposto lato JustWatch
     now = time.gmtime()
     min_year = now.tm_year - 1  # ~12 mesi (anno come proxy, JustWatch non ha range)
     out = []
@@ -121,8 +163,9 @@ def well_recenti(f):
 def well_capolavori(f):
     # intersezione: ordinati per voto IMDb MA presenti nel POPULAR (serve a
     # togliere la spazzatura poco vista che vince a poche valutazioni)
-    ranked = jw_popular(f, 60, ranked=True)
-    popular_ids = set(t["id"] for t in jw_popular(f, 100))
+    ranked = jw_popular(f, 100, ranked=True)  # classifica globale (range incluso)
+    popular_ids = set(t["id"] for t in (jw_range(f) if "releaseYear" in f and
+                      f["releaseYear"]["max"] > f["releaseYear"]["min"] else jw_popular(f, 100)))
     out = [t for t in ranked if t["id"] in popular_ids]
     return out
 
@@ -137,10 +180,20 @@ def pick_wells(mode, f):
     return {"sala": well_sala(f), "recenti": well_recenti(f), "capolavori": well_capolavori(f)}
 
 
-def blend(wells, pool_size, offset, seed):
+def blend(wells, pool_size, offset, seed, seen=None):
+    seen = seen or set()
+    placed = set()
+
+    def fresh(t):
+        k = t.get("id") or (t["titolo"], t["anno"])
+        if k in seen or k in placed:
+            return False  # mai duplicati: ne' visti prima, ne' tra pozzi sovrapposti
+        placed.add(k)
+        return True
+
     if len(wells) == 1:
         name, items = list(wells.items())[0]
-        cand = [dict(t, pozzo=name) for t in items]
+        cand = [dict(t, pozzo=name) for t in items if fresh(t)]
     else:
         # menù degustazione 60/20/20 (Q16): ogni blocco di 10 = 6 recenti, 2 sala, 2 capolavori
         quotas = {"recenti": 6, "sala": 2, "capolavori": 2}
@@ -151,10 +204,13 @@ def blend(wells, pool_size, offset, seed):
             for name in ("recenti", "sala", "capolavori"):
                 items = wells.get(name) or []
                 for _ in range(quotas[name]):
-                    if idx[name] < len(items):
-                        cand.append(dict(items[idx[name]], pozzo=name))
+                    while idx[name] < len(items):
+                        t = items[idx[name]]
                         idx[name] += 1
-                        added = True
+                        if fresh(t):
+                            cand.append(dict(t, pozzo=name))
+                            added = True
+                            break
             if not added:
                 break
     if seed is not None:
@@ -212,6 +268,10 @@ def main():
     seed_s = opt("--seed")
     seed = int(seed_s) if seed_s else None
     year = opt("--year")
+    seen_s = opt("--seen") or ""
+    seen = set(x for x in seen_s.split(",") if x.strip())
+    if seen:
+        offset = 0  # con la memoria dei visti, il "prossimo blocco" e' sempre in testa
 
     if genre and genre not in GENRES:
         bad = [x for x in genre.split(",") if x.strip() and x.strip().lower() not in GENRES]
@@ -222,7 +282,7 @@ def main():
 
     f = base_filter(tipo, genre, year)
     wells = pick_wells(mode, f)
-    pool, total = blend(wells, pool_size, offset, seed)
+    pool, total = blend(wells, pool_size, offset, seed, seen)
     # mai candidati senza speranza: togli doppioni per titolo+anno
     seen = set()
     uniq = []
