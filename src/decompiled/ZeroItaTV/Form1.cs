@@ -467,7 +467,7 @@ public class Form1 : Form
 		this.label1.Name = "label1";
 		this.label1.Size = new System.Drawing.Size(96, 116);
 		this.label1.TabIndex = 9;
-		this.label1.Text = " ***** TVOSA *****\r\n       \r\n\r\n\r\n\r\n\r\n\r\n               ver 2.9f";
+		this.label1.Text = " ***** TVOSA *****\r\n       \r\n\r\n\r\n\r\n\r\n\r\n               ver 3.0";
 		this.label1.Click += new System.EventHandler(this.label1_Click);
 		this.button8.AccessibleDescription = "";
 		this.button8.AccessibleName = "Nascondi TVOSA in traybar";

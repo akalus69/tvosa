@@ -79,6 +79,9 @@ namespace ZeroItaTV
 
 		private string titoloTarget;
 
+		// il trailer e' finito sul'ultima posizione nota: carica e scava da solo
+		private bool advanceAfterLoad;
+
 		// configura la finestra come un CARICA dell'utente: combo, anno e (opzionale)
 		// primo titolo su cui posizionarsi; poi il pool si naviga con AVANTI/INDIETRO
 		public void ApriConFiltro(string mode, string genre, string tipo, string anno, string titolo)
@@ -243,10 +246,41 @@ namespace ZeroItaTV
 			try
 			{
 				string userData = Path.Combine(Path.GetTempPath(), "TvOsaTrailer");
-				CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, userData);
+				// autoplay senza gesto utente (play partira' da solo, anche con audio)
+				CoreWebView2EnvironmentOptions opts = new CoreWebView2EnvironmentOptions("--autoplay-policy=no-user-gesture-required");
+				CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, userData, opts);
 				await web.EnsureCoreWebView2Async(env);
 				web.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
 				web.CoreWebView2.Settings.IsStatusBarEnabled = false;
+				// autoplay con audio: gestito dal flag no-user-gesture-required (SDK vecchia)
+				// il player segnala 'TRAILER_ENDED' a fine trailer: si avanza da soli
+				web.CoreWebView2.WebMessageReceived += delegate(object s2, CoreWebView2WebMessageReceivedEventArgs e2)
+				{
+					string msg = null;
+					try
+					{
+						msg = e2.TryGetWebMessageAsString();
+					}
+					catch
+					{
+					}
+					if (msg == "TRAILER_ENDED")
+					{
+						if (idx < pool.Count - 1)
+						{
+							Sposta(1);
+						}
+						else if (!esauriti && !busy)
+						{
+							advanceAfterLoad = true;
+							CaricaPool();
+						}
+						else
+						{
+							lblInfo.Text = "Pool finito: premi CARICA o MISCELA per un giro nuovo.";
+						}
+					}
+				};
 				// Errore 153 di YouTube: l'embed vuole un Referer valido. Serviamo una
 				// pagina locale sotto virtual-host http://tvosa.local: l'iframe
 				// partira' da quell'origine e YouTube accettera' l'embed.
@@ -375,6 +409,7 @@ namespace ZeroItaTV
 						busy = false;
 						if (err != null)
 						{
+							advanceAfterLoad = false;
 							lblInfo.Text = "Errore motore: " + err;
 							return;
 						}
@@ -388,8 +423,14 @@ namespace ZeroItaTV
 												}
 											}
 											nextOffset = noff;
-						esauriti = fine;
-						if (idx < 0 && pool.Count > 0)
+																esauriti = fine;
+																if (advanceAfterLoad && pool.Count > idx + 1)
+																{
+																	// il trailer e' finito in coda al blocco: si avanza da soli
+																	advanceAfterLoad = false;
+																	Sposta(1);
+																}
+																else if (idx < 0 && pool.Count > 0)
 						{
 							idx = 0;
 							if (titoloTarget != null)
@@ -539,15 +580,43 @@ namespace ZeroItaTV
 			}
 			if (embed == null)
 			{
-				lblInfo.Text = "Nessun trailer trovato per " + titolo + " — AVANTI al prossimo";
+				lblInfo.Text = "Nessun trailer trovato per " + titolo + " — passo al prossimo";
 				web.CoreWebView2.Navigate("about:blank");
+				if (idx >= 0 && idx < pool.Count - 1)
+				{
+					Sposta(1);
+				}
 				return;
 			}
-			// pagina locale dentro il virtual-host: l'iframe eredita Referer valido
-			string html = "<!DOCTYPE html><html><head><style>html,body{margin:0;height:100%;background:#000}"
-				+ "iframe{border:0;width:100%;height:100%}</style></head><body>"
-				+ "<iframe src=\"" + embed + "\" allow=\"autoplay; encrypted-media; picture-in-picture\" allowfullscreen></iframe>"
-				+ "</body></html>";
+			// pagina locale dentro il virtual-host: l'iframe eredita Referer valido.
+			// Con l'API IFrame di YouTube: playVideo() da sola (niente click play)
+			// e postMessage 'TRAILER_ENDED' a fine trailer (avanza il pool da sola).
+			string vid = null;
+			int pe = embed.IndexOf("/embed/");
+			if (pe >= 0)
+			{
+				int vs = pe + 7;
+				int vq = embed.IndexOfAny(new char[] { '?', '&' }, vs);
+				vid = (vq > 0 ? embed.Substring(vs, vq - vs) : embed.Substring(vs));
+			}
+			string html;
+			if (vid != null && vid.Length >= 6)
+			{
+				html = "<!DOCTYPE html><html><head><style>html,body{margin:0;height:100%;background:#000}#p{width:100%;height:100%}</style></head><body><div id=\"p\"></div>"
+					+ "<script src=\"https://www.youtube.com/iframe_api\"></script><script>"
+					+ "var _ended=false;"
+					+ "function onYouTubeIframeAPIReady(){new YT.Player('p',{videoId:'" + vid + "',playerVars:{autoplay:1,rel:0,cc_load_policy:1,playsinline:1,origin:'http://tvosa.local'},"
+					+ "events:{onReady:function(e){try{e.target.playVideo()}catch(x){}},"
+					+ "onStateChange:function(e){if(e.data===0&&!_ended){_ended=true;if(window.chrome&&window.chrome.webview){window.chrome.webview.postMessage('TRAILER_ENDED');}}}}});}"
+					+ "</script></body></html>";
+			}
+			else
+			{
+				html = "<!DOCTYPE html><html><head><style>html,body{margin:0;height:100%;background:#000}"
+					+ "iframe{border:0;width:100%;height:100%}</style></head><body>"
+					+ "<iframe src=\"" + embed + "\" allow=\"autoplay; encrypted-media; picture-in-picture\" allowfullscreen></iframe>"
+					+ "</body></html>";
+			}
 			try
 			{
 				File.WriteAllText(Path.Combine(Path.GetTempPath(), "TvOsaTrailer", "player.html"), html, new UTF8Encoding(false));

@@ -30,17 +30,19 @@ from tvosa_mcp import jw_gql  # stessa rete JustWatch del motore TROVA FILM
 
 GQL = "https://apis.justwatch.com/graphql"
 
-POPULAR_TITLES = """query T($country: Country!, $language: Language!, $filter: TitleFilter!, $first: Int!) {
-  popularTitles(country: $country, filter: $filter, first: $first, sortBy: POPULAR, sortRandomSeed: 0) {
-    edges { node { id objectId
+POPULAR_TITLES = """query T($country: Country!, $language: Language!, $filter: TitleFilter!, $first: Int!, $after: String) {
+  popularTitles(country: $country, filter: $filter, first: $first, after: $after, sortBy: POPULAR, sortRandomSeed: 0) {
+    pageInfo { hasNextPage }
+    edges { cursor node { id objectId
       content(country: $country, language: $language) { title originalReleaseYear genres { shortName } }
     } }
   }
 }"""
 
-RANKED_TITLES = """query T($country: Country!, $language: Language!, $filter: TitleFilter!, $first: Int!) {
-  popularTitles(country: $country, filter: $filter, first: $first, sortBy: IMDB_SCORE, sortRandomSeed: 0) {
-    edges { node { id objectId
+RANKED_TITLES = """query T($country: Country!, $language: Language!, $filter: TitleFilter!, $first: Int!, $after: String) {
+  popularTitles(country: $country, filter: $filter, first: $first, after: $after, sortBy: IMDB_SCORE, sortRandomSeed: 0) {
+    pageInfo { hasNextPage }
+    edges { cursor node { id objectId
       content(country: $country, language: $language) { title originalReleaseYear genres { shortName } }
     } }
   }
@@ -95,22 +97,31 @@ def parse_year(y):
 _MEMO = {}
 
 
-def jw_popular(filt, first=100, ranked=False):
-    key = (json.dumps(filt, sort_keys=True), first, ranked)
+def jw_popular(filt, first=100, ranked=False, pages=1):
+    key = (json.dumps(filt, sort_keys=True), first, ranked, pages)
     if key in _MEMO:
         return _MEMO[key]
     q = RANKED_TITLES if ranked else POPULAR_TITLES
-    r = jw_gql(q, {"country": "IT", "language": "it", "filter": filt, "first": first}, "T")
-    edges = (r.get("data") or {}).get("popularTitles", {}).get("edges", []) or []
     out = []
-    for e in edges:
-        n = e["node"]
-        c = n.get("content") or {}
-        if not c.get("title"):
-            continue
-        out.append({"id": n["id"], "objectId": n.get("objectId"),
-                    "titolo": c["title"], "anno": c.get("originalReleaseYear"),
-                    "genere": [g["shortName"] for g in (c.get("genres") or [])]})
+    after = None
+    for _ in range(max(1, pages)):
+        r = jw_gql(q, {"country": "IT", "language": "it", "filter": filt,
+                       "first": first, "after": after}, "T")
+        pt = (r.get("data") or {}).get("popularTitles", {}) or {}
+        edges = pt.get("edges", []) or []
+        for e in edges:
+            n = e["node"]
+            c = n.get("content") or {}
+            if not c.get("title"):
+                continue
+            out.append({"id": n["id"], "objectId": n.get("objectId"),
+                        "titolo": c["title"], "anno": c.get("originalReleaseYear"),
+                        "genere": [g["shortName"] for g in (c.get("genres") or [])]})
+        if not (pt.get("pageInfo") or {}).get("hasNextPage") or not edges:
+            break
+        after = edges[-1].get("cursor")
+        if not after:
+            break
     _MEMO[key] = out
     return out
 
@@ -162,10 +173,19 @@ def well_recenti(f):
 
 def well_capolavori(f):
     # intersezione: ordinati per voto IMDb MA presenti nel POPULAR (serve a
-    # togliere la spazzatura poco vista che vince a poche valutazioni)
-    ranked = jw_popular(f, 100, ranked=True)  # classifica globale (range incluso)
-    popular_ids = set(t["id"] for t in (jw_range(f) if "releaseYear" in f and
-                      f["releaseYear"]["max"] > f["releaseYear"]["min"] else jw_popular(f, 100)))
+    # togliere la spazzatura poco vista che vince a poche valutazioni).
+    # Con un intervallo di anni la classifica va presa ANNO PER ANNO: la top100
+    # globale sul range soffoca il pozzo (2010-2015 thriller = 17 titoli contro
+    # 100/anno, fix 2026-11-02).
+    in_range = "releaseYear" in f and f["releaseYear"]["max"] > f["releaseYear"]["min"]
+    if in_range:
+        ranked = jw_range(f, ranked=True)
+        popular_ids = set(t["id"] for t in jw_range(f))
+    else:
+        # anno singolo: JustWatch limita 100 risultati per query, ma con i cursor
+        # si paginano 300 per cernita (altrimenti l'intersezione si ferma a ~30)
+        ranked = jw_popular(f, 100, ranked=True, pages=3)
+        popular_ids = set(t["id"] for t in jw_popular(f, 100, pages=3))
     out = [t for t in ranked if t["id"] in popular_ids]
     return out
 
@@ -224,18 +244,33 @@ def find_trailer(title, year):
     queries = ["%s %s trailer italiano ufficiale" % (title, year or ""),
                "%s %s trailer italiano" % (title, year or ""),
                "%s %s official trailer" % (title, year or "")]
+    fallback = None
     for q in queries:
         q = q.strip()
         try:
-            r = subprocess.run([py, "-m", "yt_dlp", "--flat-playlist", "--print", "%(id)s",
-                                "ytsearch1:" + q, "--no-warnings"],
+            r = subprocess.run([py, "-m", "yt_dlp", "--flat-playlist", "--print",
+                                "%(id)s\t%(duration)s", "ytsearch5:" + q, "--no-warnings"],
                                capture_output=True, text=True, timeout=25)
-            vid = (r.stdout or "").strip().splitlines()
-            if r.returncode == 0 and vid and vid[0].strip():
-                return vid[0].strip()
+            for line in (r.stdout or "").strip().splitlines():
+                parts = line.split("\t")
+                vid = parts[0].strip()
+                if not vid:
+                    continue
+                dur = None
+                if len(parts) > 1:
+                    try:
+                        dur = float(parts[1])
+                    except ValueError:
+                        dur = None
+                if dur is None:
+                    fallback = fallback or vid
+                    continue
+                if dur <= 300:  # trailer vero: <= 5 minuti, non film interi/clip stray
+                    return vid
+                fallback = fallback or vid
         except Exception:
             pass
-    return None
+    return fallback
 
 
 def main():
